@@ -1,0 +1,4 @@
+wagtail==2.6.2
+puput==1.0.5
+wagtail-markdown
+wagtailfontawesome

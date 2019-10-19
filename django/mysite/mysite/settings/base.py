@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'taggit',
     'puput',
 
+    'wagtailmarkdown',
+
     'wagtail.contrib.sitemaps',
     'wagtail.contrib.routable_page',
     'django_social_share',

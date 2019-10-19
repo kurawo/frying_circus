@@ -7,12 +7,11 @@ services:
       - "3031"
     depends_on:
       - postgres
-    #command: bash -c "python manage.py migrate && gunicorn my_docker_project.wsgi -b 0.0.0.0:3031"
     command: bash -c "cd mysite && gunicorn mysite.wsgi -b 0.0.0.0:3031"
     volumes:
-      #- "staticdata:/opt/static/"
       - "./mysite/static:/opt/apps/mysite/static"
       - "./django:/opt/apps" # 2019/09/28 kurawo add
+      - "./puput:/usr/local/lib/python3.7/site-packages/puput" # 2019/10/19 kurawo add
   nginx:
     restart: always
     image: nginx
@@ -22,7 +21,6 @@ services:
       - "80:80"
     volumes:
       - "./nginx/:/etc/nginx/"
-      #- "staticdata:/opt/apps/static/"
       - "./mysite/static:/opt/apps/static/"
   postgres:
     image: postgres
@@ -35,5 +33,3 @@ services:
 
 volumes:
   dbdata:
-  #staticdata:
-  #wagtailstaticdata:
