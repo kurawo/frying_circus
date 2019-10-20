@@ -9,7 +9,6 @@ services:
       - postgres
     command: bash -c "cd cmssite && gunicorn cmssite.wsgi -b 0.0.0.0:3031"
     volumes:
-      - "./mysite/static:/opt/apps/mysite/static"
       - "./django:/opt/apps" # 2019/09/28 kurawo add
       - "./puput:/usr/local/lib/python3.7/site-packages/puput" # 2019/10/19 kurawo add
   nginx:

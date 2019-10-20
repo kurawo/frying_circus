@@ -16,6 +16,9 @@ urlpatterns = [
     path('django-admin/', admin.site.urls),
     path('admin/', include(coderedadmin_urls)),
 
+    url(r'',include(puput_urls)),
+    url(r'', include(wagtail_urls)),
+
     # Documents
     path('docs/', include(wagtaildocs_urls)),
 
@@ -26,9 +29,6 @@ urlpatterns = [
     # the page serving mechanism. This should be the last pattern in
     # the list:
     re_path(r'', include(codered_urls)),
-
-    url(r'',include(puput_urls)),
-    url(r'', include(wagtail_urls)),
 
     # Alternatively, if you want CMS pages to be served from a subpath
     # of your site, rather than the site root:
