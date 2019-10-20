@@ -7,7 +7,7 @@ services:
       - "3031"
     depends_on:
       - postgres
-    command: bash -c "cd mysite && gunicorn mysite.wsgi -b 0.0.0.0:3031"
+    command: bash -c "cd cmssite && gunicorn cmssite.wsgi -b 0.0.0.0:3031"
     volumes:
       - "./mysite/static:/opt/apps/mysite/static"
       - "./django:/opt/apps" # 2019/09/28 kurawo add
@@ -21,7 +21,7 @@ services:
       - "80:80"
     volumes:
       - "./nginx/:/etc/nginx/"
-      - "./mysite/static:/opt/apps/static/"
+      - "./django/cmssite/static:/opt/apps/static/" # 2019/10/20 kurawo add
   postgres:
     image: postgres
     ports:
