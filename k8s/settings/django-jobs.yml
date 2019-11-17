@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: sample
+  name: setup
+spec:
+  template:
+    metadata:
+      name: setup
+    spec:
+      containers:
+      - name: setup
+        image: pycms_django
+        imagePullPolicy: Never
+        args:
+          - sh
+          - -c
+          - "cd cmssite && python manage.py migrate"
+        envFrom:
+        - configMapRef:
+            name: django-config
+      restartPolicy: Never

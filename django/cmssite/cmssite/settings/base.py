@@ -198,7 +198,7 @@ LOGIN_REDIRECT_URL = 'wagtailadmin_home'
 
 # Wagtail settings
 
-WAGTAIL_SITE_NAME = 'Distributed-Novel-Application-by-Git'
+WAGTAIL_SITE_NAME = 'frying_circus'
 
 WAGTAIL_ENABLE_UPDATE_CHECK = False
 

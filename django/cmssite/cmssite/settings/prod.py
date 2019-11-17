@@ -15,7 +15,7 @@ ALLOWED_HOSTS = ['localhost']
 EMAIL_BACKEND = 'django_sendmail_backend.backends.EmailBackend'
 
 # Default email address used to send messages from the website.
-DEFAULT_FROM_EMAIL = 'Distributed-Novel-Application-by-Git <info@localhost>'
+DEFAULT_FROM_EMAIL = 'frying_circus <info@localhost>'
 
 # A list of people who get error notifications.
 ADMINS = [

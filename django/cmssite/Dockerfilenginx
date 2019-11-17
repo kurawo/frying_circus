@@ -1,0 +1,3 @@
+From nginx:1.17.0
+
+COPY ./static /opt/apps/static

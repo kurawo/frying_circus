@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: sample
+  name: nginxdjango
+spec:
+  selector:
+    app: nginxdjango
+  type: NodePort
+  ports:
+  - port: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: sample
+  name: nginxdjango
+spec:
+  selector:
+    matchLabels:
+      app: nginxdjango
+  template:
+    metadata:
+      labels:
+        app: nginxdjango
+    spec:
+      containers:
+      # django container
+      - name: django
+        image: pycms_django
+        imagePullPolicy: Never
+        args:
+          - sh
+          - -c
+          - "cd cmssite && gunicorn cmssite.wsgi -b 0.0.0.0:3031"
+        envFrom:
+        - configMapRef:
+            name: django-config
+        ports:
+        - containerPort: 3031
+      # nginx container
+      - name: nginx
+        image: nginxstaticplus
+        imagePullPolicy: Never
+        volumeMounts:
+        - mountPath: /etc/nginx # /etc/nginxにvolumesのnginx-confをmountする
+          readOnly: true
+          name: nginx-config
+        - mountPath: /var/log/nginx
+          name: log
+      volumes:
+      - name: nginx-config # volumeMountsで/etc/nginxにmountするやつ
+        configMap:
+          name: nginx-config # ConfigMapのnginx-configを/etc/nginx以下に配置する
+          items:
+            - key: nginx.conf # nginx-confのkey
+              path: nginx.conf # nginx.confというファイル名
+            - key: mime.types
+              path: mime.types
+      - name: log
+        emptyDir: {}
