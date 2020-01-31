@@ -1,5 +1,6 @@
 version: '3.7'
 services:
+
   django:
     restart: always
     build: ./django
@@ -9,26 +10,60 @@ services:
       - postgres
     command: bash -c "cd cmssite && gunicorn cmssite.wsgi -b 0.0.0.0:3031"
     volumes:
-      - "./django:/opt/apps" # 2019/09/28 kurawo add
-      - "./puput:/usr/local/lib/python3.7/site-packages/puput" # 2019/10/19 kurawo add
+      - ./django:/opt/apps # 2019/09/28 kurawo add
+      - ./puput:/usr/local/lib/python3.7/site-packages/puput # 2019/10/19 kurawo add
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "localhost:24224"
+        tag: "docker.django"
+
   nginx:
     restart: always
-    image: nginx
+    image: nginx:1.17.8
     depends_on:
       - django
     ports:
       - "80:80"
     volumes:
-      - "./nginx/:/etc/nginx/"
-      - "./django/cmssite/static:/opt/apps/static/" # 2019/10/20 kurawo add
+      - ./nginx/:/etc/nginx/
+      - ./django/cmssite/static:/opt/apps/static/ # 2019/10/20 kurawo add
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "localhost:24224"
+        tag: "docker.nginx"
+
   postgres:
-    image: postgres
+    image: postgres:12.1
+    depends_on:
+      - fluentd
     ports:
       - "5432:5432"
     volumes:
-      - "dbdata:/var/lib/postgresql/data"
+      - dbdata:/var/lib/postgresql/data
+      - ./postgres/conf/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+      - ./postgres/dump/:/tmp/
     environment:
       POSTGRES_PASSWORD: hogemojahogemoja
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "localhost:24224"
+        tag: "docker.postgres"
+
+
+  fluentd:
+    image: fluent/fluentd:v1.9-1
+    restart: always
+    command: >
+      /usr/bin/fluentd -c /fluentd/etc/fluent.conf -v
+    ports:
+      - "127.0.0.1:24224:24224"
+      - "127.0.0.1:24224:24224/udp"
+    volumes:
+      - ./log:/fluentd/log
+      - ./fluent.conf:/fluentd/etc/fluent.conf:ro
 
 volumes:
   dbdata:
