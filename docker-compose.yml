@@ -2,7 +2,6 @@ version: '3.7'
 services:
 
   django:
-    restart: always
     build: ./django
     expose:
       - "3031"
@@ -19,7 +18,6 @@ services:
         tag: "docker.django"
 
   nginx:
-    restart: always
     image: nginx:1.17.8
     depends_on:
       - django
@@ -56,7 +54,6 @@ services:
 
   fluentd:
     image: fluent/fluentd:v1.9-1
-    restart: always
     command: >
       /usr/bin/fluentd -c /fluentd/etc/fluent.conf -v
     ports:
