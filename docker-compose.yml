@@ -33,7 +33,7 @@ services:
         tag: "docker.nginx"
 
   postgres:
-    image: postgres:12.1
+    image: postgres:12.2-alpine
     depends_on:
       - fluentd
     ports:
