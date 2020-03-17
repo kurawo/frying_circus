@@ -45,8 +45,8 @@ services:
         && docker-entrypoint.sh postgres"
     volumes:
       - dbdata:/var/lib/postgresql/data
-      - ./postgres/conf/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
-      - ./postgres/dump/:/tmp/
+      - ./postgres/conf/postgresql.conf:/tmp/pgconf/postgresql.conf
+      - ./postgres/dump/:/tmp/pgdump/
       - ./postgres/pglog/:/var/lib/postgresql/data/log/
       - ./cron:/usr/cron/
     environment:
