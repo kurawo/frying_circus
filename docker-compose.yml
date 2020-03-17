@@ -47,7 +47,7 @@ services:
       - dbdata:/var/lib/postgresql/data
       - ./postgres/conf/postgresql.conf:/tmp/pgconf/postgresql.conf
       - ./postgres/dump/:/tmp/pgdump/
-      - ./postgres/pglog/:/var/lib/postgresql/data/log/
+      - ./postgres/pglog/:/var/log/postgresql/
       - ./cron:/usr/cron/
     environment:
       POSTGRES_PASSWORD: hogemojahogemoja
